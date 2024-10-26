@@ -7,11 +7,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.jungle.blazegames.R
+val nujnoefont = FontFamily(Font(R.font.fontalkalami))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = nujnoefont,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -35,4 +36,3 @@ val Typography = Typography(
     */
 )
 
-val nujnoefont = FontFamily(Font(R.font.fontalkalami))

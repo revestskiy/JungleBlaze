@@ -11,120 +11,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType.Companion.Text
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jungle.blazegames.ui.theme.nujnoefont
-import kotlinx.coroutines.delay
-import androidx.compose.material3.Text
-
 
 @Composable
-fun ResultScreen() {
-    // Отложенное действие для перехода
-    LaunchedEffect(Unit) {
-        delay(2000)
-        // Здесь можно добавить действия через 2 секунды (например, переход)
-    }
-
-    // Основной контейнер
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painter = painterResource(id = R.drawable.background2),
-                contentScale = ContentScale.Crop
-            ),
-        contentAlignment = Alignment.Center // Центровка элементов
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally, // Центровка по горизонтали
-            verticalArrangement = Arrangement.Center, // Центрирование всех элементов
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 100.dp) // Отступы по краям
-        ) {
-            // "LEVEL 1" чуть выше "LOSE"
-            Text(
-                text = "LOSE",
-                fontSize = 43.sp,
-                color = Color.White,
-                fontFamily = nujnoefont
-            )
-
-            Spacer(modifier = Modifier.height(20.dp)) // Отступ между "LEVEL 1" и "LOSE"
-
-            // "LOSE" по центру
-            Text(
-                text = "LEVEL 1",
-                fontSize = 28.sp,
-                color = Color.White,
-                fontFamily = nujnoefont
-            )
-
-            Spacer(modifier = Modifier.height(20.dp)) // Отступ между "LOSE" и "Time is out"
-
-            // "Time is out" чуть ниже "LOSE"
-            Text(
-                text = "Time is out",
-                fontSize = 28.sp,
-                color = Color.White,
-                fontFamily = nujnoefont
-            )
-
-            Spacer(modifier = Modifier.height(50.dp)) // Отступ перед кнопками
-
-            // Кнопки Try Again и Home внизу экрана
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.tryagainbutton), // Ресурс кнопки Try Again
-                    contentDescription = "Try Again",
-                    modifier = Modifier
-                        .size(230.dp, 60.dp)
-                        .clickable {
-                            // Действие при нажатии кнопки Try Again
-                        }
-                )
-
-                Spacer(modifier = Modifier.height(20.dp)) // Отступ между кнопками Try Again и Home
-
-                Image(
-                    painter = painterResource(id = R.drawable.homebutton), // Ресурс кнопки Home
-                    contentDescription = "Home",
-                    modifier = Modifier
-                        .size(230.dp, 60.dp)
-                        .clickable {
-                            // Действие при нажатии кнопки Home
-                        }
-                )
-            }
-        }
-    }
-}
-
-
-
-@Preview
-@Composable
-fun WinScreen() {
-    // Отложенное действие для перехода
-    LaunchedEffect(Unit) {
-        delay(2000)
-        // Здесь можно добавить действия через 2 секунды (например, переход)
-    }
+fun WinScreen(
+    isWin: Boolean = false,
+    level: Int,
+    score: Int,
+    onHome: () -> Unit,
+    onLevel: (Int) -> Unit
+) {
 
     // Основной контейнер
     Box(
@@ -144,27 +51,43 @@ fun WinScreen() {
                 .padding(bottom = 100.dp) // Отступы по краям
         ) {
             // Заменяем текст LOSE на изображение winnadpis
-            Image(
+            if (isWin) Image(
                 painter = painterResource(id = R.drawable.winnadpis), // Ресурс изображения победы
                 contentDescription = "Win",
                 modifier = Modifier.size(420.dp, 240.dp) // Размер изображения
+            ) else Text(
+                text = "LOSE",
+                fontSize = 43.sp,
+                color = Color.White,
+                fontFamily = nujnoefont,
+                modifier = Modifier
+                    .height(200.dp),
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(20.dp)) // Отступ между "WIN" и "Score"
 
             Text(
-                text = "LEVEL 1",
+                text = "LEVEL $level",
                 fontSize = 28.sp,
                 color = Color.White,
-                fontFamily = nujnoefont
+                fontFamily = nujnoefont,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(50.dp))
-            Text(
-                text = "Score 750",
+            if (isWin) Text(
+                text = "SCORE\n$score",
                 fontSize = 28.sp,
                 color = Color.White,
-                fontFamily = nujnoefont
+                fontFamily = nujnoefont,
+                textAlign = TextAlign.Center
+            ) else Text(
+                text = "Time is out",
+                fontSize = 32.sp,
+                color = Color.White,
+                fontFamily = nujnoefont,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(50.dp))// Отступ перед кнопками
@@ -175,12 +98,16 @@ fun WinScreen() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.nextbutton), // Ресурс кнопки Next
+                    painter = painterResource(id = if (!isWin) R.drawable.tryagainbutton else R.drawable.nextbutton), // Ресурс кнопки Next
                     contentDescription = "Next",
                     modifier = Modifier
                         .size(230.dp, 60.dp)
                         .clickable {
-                            // Действие при нажатии кнопки Next
+                            if (isWin) {
+                                onLevel(level+1)
+                            } else {
+                                onLevel(level)
+                            }
                         }
                 )
 
@@ -192,7 +119,7 @@ fun WinScreen() {
                     modifier = Modifier
                         .size(230.dp, 60.dp)
                         .clickable {
-                            // Действие при нажатии кнопки Home
+                            onHome()
                         }
                 )
             }

@@ -1,12 +1,8 @@
 package com.jungle.blazegames
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.* // Для Row, Column, Box и др.
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
@@ -14,23 +10,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
 import androidx.compose.ui.draw.paint
 import com.jungle.blazegames.ui.theme.nujnoefont
 
-@Preview
 @Composable
-fun StatsScreen() {
+fun SettingsScreen(
+    onBack: () -> Unit
+) {
     // Переменные состояния для переключателей
-    val isSoundOn = remember { mutableStateOf(true) }
-    val isMusicOn = remember { mutableStateOf(false) }
+    val isSoundOn = remember { mutableStateOf(Prefs.soundVolume != 0.0f) }
+    val isMusicOn = remember { mutableStateOf(Prefs.musicVolume != 0.0f) }
 
     // Основной экран
     Box(
@@ -51,6 +46,7 @@ fun StatsScreen() {
                 .align(Alignment.TopStart)
                 .clickable {
                     // Действие при нажатии кнопки home
+                    onBack()
                 }
         )
 
@@ -92,7 +88,7 @@ fun StatsScreen() {
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.Red,
                         uncheckedThumbColor = Color.White,
-                        checkedTrackColor = Color.Yellow,
+                        checkedTrackColor = yellow,
                         uncheckedTrackColor = Color.Gray
                     )
                 )
@@ -119,7 +115,7 @@ fun StatsScreen() {
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.Red,
                         uncheckedThumbColor = Color.White,
-                        checkedTrackColor = Color.Yellow,
+                        checkedTrackColor = yellow,
                         uncheckedTrackColor = Color.Gray
                     )
                 )
@@ -135,6 +131,19 @@ fun StatsScreen() {
                     .size(width = 200.dp, height = 60.dp)
                     .clickable {
                         // Действие при нажатии кнопки Save
+                        if (isSoundOn.value) {
+                            Prefs.soundVolume = 0.3f
+                        } else {
+                            Prefs.soundVolume = 0.0f
+                        }
+                        if (isMusicOn.value) {
+                            Prefs.musicVolume = 0.5f
+                        } else {
+                            Prefs.musicVolume = 0.0f
+                        }
+                        SoundManager.setSoundVolume()
+                        SoundManager.setMusicVolume()
+                        onBack()
                     }
             )
         }

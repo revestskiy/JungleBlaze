@@ -1,11 +1,11 @@
 package com.jungle.blazegames
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,17 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jungle.blazegames.ui.theme.nujnoefont
 
-
-@Preview
+val benzinBold = FontFamily(Font(R.font.benzin_bold))
 @Composable
-fun ExitScreen() {
+fun ExitScreen(
+    onBack: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +61,7 @@ fun ExitScreen() {
                     modifier = Modifier
                         .size(55.dp)
                         .clickable {
-
+                            onBack()
                         }
                 )
             }
@@ -75,10 +78,11 @@ fun ExitScreen() {
             )
 
             Spacer(modifier = Modifier.height(78.dp))
-
-            Row(
+            val context = LocalContext.current as Activity
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.yesbutton),
@@ -86,7 +90,7 @@ fun ExitScreen() {
                     modifier = Modifier
                         .size(170.dp, 70.dp)
                         .clickable {
-
+                            context.finishAndRemoveTask()
                         }
                 )
 
@@ -99,6 +103,7 @@ fun ExitScreen() {
                         .size(170.dp, 70.dp)
                         .clickable {
 
+                            onBack()
                         }
                 )
             }

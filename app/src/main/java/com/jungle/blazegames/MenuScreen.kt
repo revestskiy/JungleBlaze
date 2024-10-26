@@ -1,7 +1,6 @@
 package com.jungle.blazegames
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,14 +18,18 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jungle.blazegames.ui.theme.nujnoefont
 
-@Preview
 @Composable
-fun MenuScreen() {
+fun MenuScreen(
+    onPlay: () -> Unit,
+    onLevels: () -> Unit,
+    onSettings: () -> Unit,
+    onAchievements: () -> Unit,
+    onExit: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +60,7 @@ fun MenuScreen() {
                 modifier = Modifier
                     .size(width = 230.dp, height = 60.dp)
                     .clickable {
-
+                        onPlay()
                     }
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -68,7 +71,7 @@ fun MenuScreen() {
                 modifier = Modifier
                     .size(width = 230.dp, height = 60.dp)
                     .clickable {
-
+                        onLevels()
                     }
             )
 
@@ -80,7 +83,7 @@ fun MenuScreen() {
                 modifier = Modifier
                     .size(width = 230.dp, height = 60.dp)
                     .clickable {
-
+                        onSettings()
                     }
             )
 
@@ -92,7 +95,7 @@ fun MenuScreen() {
                 modifier = Modifier
                     .size(width = 230.dp, height = 60.dp)
                     .clickable {
-
+                        onAchievements()
                     }
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -103,7 +106,7 @@ fun MenuScreen() {
                 modifier = Modifier
                     .size(width = 230.dp, height = 60.dp)
                     .clickable {
-
+                        onExit()
                     }
             )
         }
